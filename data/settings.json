@@ -55,5 +55,11 @@
     }
   ],
   "showLanguage": true,
-  "mirrorList": []
+  "mirrorList": [
+    {
+      "url": "https://xjh22222228.github.io/nav/",
+      "icon": "",
+      "name": "Github演示镜像(国外)"
+    }
+  ]
 }
