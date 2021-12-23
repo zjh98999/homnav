@@ -55,6 +55,7 @@
     }
   ],
   "showLanguage": true,
+  "showRate": false,
   "mirrorList": [
     {
       "url": "https://xjh22222228.github.io/nav/",
