@@ -1,4 +1,4 @@
-// Copyright @ 2018-2021 xiejiahe. All rights reserved. MIT license.
+// Copyright @ 2018-2022 xiejiahe. All rights reserved. MIT license.
 // See https://github.com/xjh22222228/nav
 
 import qs from 'qs'
@@ -23,6 +23,10 @@ export function randomInt(max: number) {
 }
 
 export function fuzzySearch(navList: INavProps[], keyword: string): INavThreeProp[] {
+  if (!keyword.trim()) {
+    return []
+  }
+
   const { type, page, id } = queryString()
   const sType = Number(type) || SearchType.Title
   const navData = []
@@ -51,6 +55,7 @@ export function fuzzySearch(navList: INavProps[], keyword: string): INavThreePro
           if (name.includes(search)) {
             let result = { ...item }
             const regex = new RegExp(`(${keyword})`, 'i')
+            result.__name__ = result.name
             result.name = result.name.replace(regex, `$1`.bold())
 
             if (!urlRecordMap[result.url]) {
@@ -85,6 +90,7 @@ export function fuzzySearch(navList: INavProps[], keyword: string): INavThreePro
           if (desc.includes(search)) {
             let result = { ...item }
             const regex = new RegExp(`(${keyword})`, 'i')
+            result.__desc__ = result.desc
             result.desc = result.desc.replace(regex, `$1`.bold())
 
             if (!urlRecordMap[result.url]) {
