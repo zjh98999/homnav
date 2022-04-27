@@ -225,3 +225,92 @@ export function parseBookmark(htmlStr: string) {
 
   return copyWebList
 }
+
+
+
+export function exportBookmark() {
+  function loadLibrary() {
+    return new Promise((resolve, reject) => {
+      const hasLibrary = document.getElementById('beautify-html')
+      if (hasLibrary) {
+        return resolve(null)
+      }
+      const library = 'https://cdn.jsdelivr.net/npm/js-beautify@1.14.0/js/lib/beautify-html.js'
+      const script = document.createElement('script')
+      script.src = library
+      script.id = 'beautify-html'
+      script.onload = resolve
+      script.onerror = reject
+      document.body.appendChild(script)
+    })
+  }
+  // await loadLibrary()
+
+  const PRE_HTML =
+`<!DOCTYPE NETSCAPE-Bookmark-file-1>
+<!-- This is an automatically generated file.
+    It will be read and overwritten.
+    DO NOT EDIT! -->
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<TITLE>Bookmarks</TITLE>
+<H1>Bookmarks</H1>
+<DL>
+    <DT><H3 ADD_DATE="1586408626" LAST_MODIFIED="1612853770" PERSONAL_TOOLBAR_FOLDER="true">书签栏</H3></DT>
+    {{#template}}
+</DL>
+
+`
+
+  let content = ''
+  const div = document.createElement('div')
+
+  function r(websiteList: INavProps[], parentDL?: HTMLElement): void {
+    websiteList.forEach((item) => {
+      const dl = document.createElement('dl')
+      const addDate = String(new Date(item.createdAt).getTime() / 1000)
+      if (item?.url) {
+        const dt = document.createElement('dt')
+        const a = document.createElement('a')
+        a.href = item.url
+        a.setAttribute('add_date', addDate)
+        a.setAttribute('icon', item.icon || '')
+        a.setAttribute('rate', item.rate)
+        a.textContent = item.title || item.name
+        dt.appendChild(a)
+        dl.appendChild(dt)
+
+        if (item.urls && typeof item.urls === 'object') {
+          for (const key in item.urls) {
+            const dt = document.createElement('dt')
+            const a = document.createElement('a')
+            a.href = item.urls[key]
+            a.setAttribute('add_date', addDate)
+            a.setAttribute('ICON', item.icon || '')
+            dt.appendChild(a)
+            dl.appendChild(dt)
+          }
+        }
+      } else {
+        const h3 = document.createElement('h3')
+        h3.setAttribute('add_date', addDate)
+        h3.setAttribute('last_modified', addDate)
+      }
+
+      if (Array.isArray(item.nav)) {
+        r(item.nav as any, dl)
+      }
+
+      if (parentDL) {
+        parentDL.appendChild(dl)
+      } else {
+        div.appendChild(dl)
+      }
+    })
+  }
+  r(websiteList)
+
+  content = div.innerHTML
+  content = PRE_HTML.replace('{{#template}}', content)
+
+  return content
+}

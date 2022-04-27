@@ -6,7 +6,7 @@ import { $t } from 'src/locale'
 import { NzNotificationService } from 'ng-zorro-antd/notification'
 import { NzMessageService } from 'ng-zorro-antd/message'
 import { setWebsiteList } from 'src/utils'
-import { parseBookmark } from 'src/utils/bookmark'
+import { parseBookmark, exportBookmark } from 'src/utils/bookmark'
 import { INavProps } from 'src/types'
 import { websiteList } from 'src/store'
 
@@ -49,5 +49,9 @@ export default class SystemBookmarkComponent {
         setTimeout(() => window.location.reload(), 2000)
       }
     }
+  }
+
+  exportBookmark() {
+    console.log(exportBookmark())
   }
 }

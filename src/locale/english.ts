@@ -72,6 +72,7 @@ export default {
   _addWeb: 'Add site',
   _clickEdit: 'Click Edit',
   _importChrome: 'Import from Chrome bookmarks',
+  _exportChrome: 'Export as Chrome bookmarks',
   _allContentMsg1: '1. After setting all data, click "synchronize to remote end" and drag the table to sort',
   _allContentMsg2: '2. Website category needs to be maintained manually,',
   _updateLogo: 'Replace logo, only PNG is supported, 200x200',
